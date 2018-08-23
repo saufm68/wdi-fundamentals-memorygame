@@ -67,6 +67,15 @@ img{
 	margin-left: 8px;
 }
 
+button{
+	width: 150px;
+	height: 60px;
+	background-color: white;
+	color: black;
+	font-size: 40px;
+	margin-top: 20px;
+}
+
 footer{
 	text-transform: uppercase;
 	padding-right: 20px;
@@ -102,4 +111,6 @@ font-size: 0;
 	font-weight:700;
 
 }
+
+
 
