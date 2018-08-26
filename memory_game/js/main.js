@@ -23,11 +23,32 @@ var cards = [
 
 
 var cardsInPlay = [];
+var x = 0;
 
 var removeOk = function(){
-	var main = document.getElementsByTagName("main")[0];
 	var okButton = document.getElementById("ok");
-	main.removeChild(okButton);	
+	okButton.parentNode.removeChild(okButton);	
+};
+
+var addOk = function(){
+	var okButton1 = document.createElement("button");
+	okButton1.setAttribute("id", "ok");
+	okButton1.textContent = "OK" ;
+	var child = document.getElementById("score");
+	document.getElementById("buttons").insertBefore(okButton1, child);
+};
+
+var removeReset = function(){
+	var removeResetButton = document.getElementById("reset");
+	removeResetButton.parentNode.removeChild(removeResetButton);
+};
+
+var addReset = function(){
+	var resetButton1 = document.createElement("button");
+	resetButton1.setAttribute("id", "reset");
+	resetButton1.textContent = "Play Again" ;
+	var child1 = document.getElementById("score");
+	document.getElementById("buttons").insertBefore(resetButton1, child1);
 };
 
 var checkForMatch = function(){
@@ -35,12 +56,48 @@ var checkForMatch = function(){
 	if (cardsInPlay.length === 2){
 		if ( cardsInPlay[0] === cardsInPlay[1] && cardsInPlay[0] === "images/queen-of-hearts.png" ){
 			alert("You have found the Queen");
+			x += 1;
+			document.getElementsByTagName("span")[0].textContent =  x;
+        
 		}
 		else {
-			alert("Sorry, Try again.");
+			if (x !== 0){
+				alert("So close, but we'll have to deduct a point.");
+				x -= 1;
+				document.getElementsByTagName("span")[0].textContent = x;
+			}
+			else {
+				alert("Sorry, Try again.");
+			}
 		}	
-		 removeOk();
-	}
+
+ 	removeOk();
+ 	addReset();
+
+	var resetButton = document.getElementById("reset");
+	var reset = function(){
+
+		while ( cardsInPlay.length !== 0){
+			cardsInPlay.pop();
+		}
+
+		for ( var i = 0; i < 12; i++){
+			var gameboard = document.getElementById("gameboard");
+			var removeCards = document.getElementsByTagName("img")[0];
+			gameboard.removeChild(removeCards);
+			i;
+		}
+
+		addOk();
+		createBoard();
+		removeReset();
+
+	};
+
+	resetButton.addEventListener("click", reset); 
+
+
+ 	}
 	
 };
 
@@ -58,7 +115,7 @@ var createBoard = function(){
 	var queen1Id = queen1.getAttribute("data-id");
 	queen1.setAttribute("src", cards[0].cardImage);
 	var randomValue2 = Math.floor(Math.random() * 12);
-	if ( randomValue2 === randomValue1 && randomValue1 !== 11 ){
+	if ( randomValue2 === randomValue1 && randomValue1 !== 11){
 		randomValue2 = randomValue1 + 1 ;
 	} else if (randomValue2 === randomValue1 && randomValue1 === 11) {
 		randomValue2 = randomValue1 - 4 ;
@@ -81,6 +138,7 @@ var createBoard = function(){
 		
 	}
 
+
 	var flipCard = function(){
 
 		var cardId = this.getAttribute('data-id')
@@ -95,7 +153,7 @@ var createBoard = function(){
 			cardsInPlay.push(cards[1].cardImage);
 			this.setAttribute("src", cards[1].cardImage);
 		}
-
+	
 		checkForMatch();
 
 	};	
@@ -109,23 +167,16 @@ var createBoard = function(){
 		}
 	};
 
-	var ok = document.getElementsByTagName("button")[0];
+	var ok = document.getElementById("ok");
 	ok.addEventListener("click", backOfCards);
 
-
 };
-
-var resetButton = document.getElementById("reset");
-var reset = function(){
-	location.reload();
-
-};
-
-resetButton.addEventListener("click", reset); 
-
-
-		
 
 
 createBoard();
+removeReset();
+		
+
+
+
 
